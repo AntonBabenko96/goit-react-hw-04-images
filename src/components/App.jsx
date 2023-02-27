@@ -27,6 +27,9 @@ export const App = () => {
   };
 
   useEffect(() => {
+    if (!search) {
+      return;
+    }
     async function fetchData() {
       try {
         setIsLoading(true);
@@ -42,10 +45,20 @@ export const App = () => {
     fetchData();
   }, [page, search]);
 
+  useEffect(
+    prevSearch => {
+      if (prevSearch === search) {
+        setPage(1);
+      } else {
+        setSearch(search);
+      }
+      setImages([]);
+    },
+    [search]
+  );
+
   const updateSearchHandler = search => {
     setSearch(search);
-    setImages([]);
-    setPage(1);
   };
 
   const loadMoreHandler = () => {
@@ -59,11 +72,14 @@ export const App = () => {
       <Searchbar onSubmit={updateSearchHandler} />
       {error && <p>{error}</p>}
       {isLoading && <Loader />}
-      {!isLoading && images.length === 0 && (
-        <p>
-          No results found for "{search}". Please enter a valid search term.
-        </p>
-      )}
+      {search
+        ? !isLoading &&
+          images.length === 0 && (
+            <p>
+              No results found for "{search}". Please enter a valid search term.
+            </p>
+          )
+        : ''}
       {images.length > 0 && (
         <>
           <ImageGallery images={images} showModal={showModalHandler} />
@@ -74,7 +90,7 @@ export const App = () => {
         </>
       )}
       {showModal && (
-        <Modal showModal={showModalHandler} hideModal={hideModalHandler}>
+        <Modal showModal={showModal} hideModal={hideModalHandler}>
           <img src={imgDetails.largeImageURL} alt={imgDetails.tags} />
         </Modal>
       )}

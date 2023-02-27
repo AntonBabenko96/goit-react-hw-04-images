@@ -4,11 +4,9 @@ import css from '../Button/Button.module.css';
 
 export const Button = ({ title, onBtnClick, type = 'button' }) => {
   return (
-    <>
-      <button className={css.Button} onClick={onBtnClick} type={type}>
-        {title}
-      </button>
-    </>
+    <button className={css.Button} onClick={onBtnClick} type={type}>
+      {title}
+    </button>
   );
 };
 

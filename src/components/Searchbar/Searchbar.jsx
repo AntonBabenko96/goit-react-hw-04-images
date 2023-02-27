@@ -6,7 +6,6 @@ import css from '../Searchbar/Searchbar.module.css';
 
 export const Searchbar = ({ onSubmit }) => {
   const [search, setSearch] = useState('');
-
   const handleChange = event => {
     const search = event.target.value;
     setSearch(search);
